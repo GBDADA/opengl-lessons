@@ -36,10 +36,14 @@ if [ "$debug" = "TRUE" ]; then
     echo "build_list = $build_list"
 fi
 
-mkdir -p "$ROOT_DIR/build"
-cd "$ROOT_DIR/build"
-cmake ..
-cmake -DBUILD_PROJECTS="$build_list" ..
+BUILD_DIR="$ROOT_DIR/build"
+
+# Удаляем кэш из корневого каталога, если вдруг он там появился
+rm -f "$ROOT_DIR/CMakeCache.txt"
+rm -rf "$ROOT_DIR/CMakeFiles"
+
+cmake -S "$ROOT_DIR" -B "$BUILD_DIR" -DBUILD_PROJECTS="$build_list"
+
 if [ "$build" = "TRUE" ]; then
-    cmake --build "$ROOT_DIR/build/"
+    cmake --build "$BUILD_DIR"
 fi

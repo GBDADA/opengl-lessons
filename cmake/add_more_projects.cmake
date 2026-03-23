@@ -15,7 +15,7 @@ function(add_more_projects)
     )
 
     # Ищем имена каталогов с проектами
-    file(GLOB SOURCE_DIRECTORIES "${${prefix}_DIRECTORY}/*")
+    file(GLOB SOURCE_DIRECTORIES CONFIGURE_DEPENDS "${${prefix}_DIRECTORY}/*")
 
     # Делаем вспомогательную переменную поскольку иначе видители не будет работать IN_LIST
     set(BUILD_LIST "${${prefix}_BUILD}")
@@ -33,14 +33,13 @@ function(add_more_projects)
         if ((BUILD_LIST) AND (NOT (${FILE_NAME} IN_LIST BUILD_LIST)))
             continue()
         endif()
-        #message(WARNING "BUILD ${FILE_NAME}")
 
         add_executable(${FILE_NAME} "${CURRENT_DIR}/main.cpp")
         target_link_libraries(${FILE_NAME} ${${prefix}_LIBRARIES})
 
         # Меняем место сборки
         set_target_properties(${FILE_NAME} PROPERTIES
-            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${FILE_NAME}-build/"
+            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
         )
     endforeach()
 endfunction()
