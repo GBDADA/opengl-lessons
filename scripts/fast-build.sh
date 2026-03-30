@@ -2,7 +2,7 @@
 
 #Скрипт для быстрой сборки
 current_key="NONE"
-build_list=""
+selected_list=""
 debug="FALSE"
 build="FALSE"
 
@@ -16,10 +16,10 @@ while [ -n "$1" ]; do
         *)
             case "$current_key" in
                 projects)
-                    if [ -z "$build_list" ]; then
-                        build_list="$1"
+                    if [ -z "$selected_list" ]; then
+                        selected_list="$1"
                     else
-                        build_list="$build_list;$1"
+                        selected_list="$selected_list;$1"
                     fi
                     ;;
                 *)
@@ -33,7 +33,7 @@ while [ -n "$1" ]; do
 done
 
 if [ "$debug" = "TRUE" ]; then
-    echo "build_list = $build_list"
+    echo "selected_list = $selected_list"
 fi
 
 BUILD_DIR="$ROOT_DIR/build"
@@ -42,7 +42,7 @@ BUILD_DIR="$ROOT_DIR/build"
 rm -f "$ROOT_DIR/CMakeCache.txt"
 rm -rf "$ROOT_DIR/CMakeFiles"
 
-cmake -S "$ROOT_DIR" -B "$BUILD_DIR" -DBUILD_PROJECTS="$build_list"
+cmake -S "$ROOT_DIR" -B "$BUILD_DIR" -DSELECTED_LESSONS="$selected_list"
 
 if [ "$build" = "TRUE" ]; then
     cmake --build "$BUILD_DIR"
