@@ -1,2 +1,3 @@
 first-program
+getting-started
 window-test
