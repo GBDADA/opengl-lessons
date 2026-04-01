@@ -16,5 +16,6 @@ esac
 alias fb="$SCRIPT_DIR/fast-build.sh"
 alias gr='cd $ROOT_DIR'
 alias upl="$SCRIPT_DIR/update-projects-list.sh"
+alias al="$SCRIPT_DIR/add-lesson.sh"
 
 cd "$ORIGINAL_DIR"

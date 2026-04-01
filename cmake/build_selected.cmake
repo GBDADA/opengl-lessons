@@ -17,7 +17,7 @@ function(build_selected)
         message(STATUS "Включение проекта в сборку: ${lesson} (${path})")
 
         # Умное добавление проекта
-        add_selected()
+        add_selected("${lesson}" "${path}")
     endforeach()
 
 endfunction()
