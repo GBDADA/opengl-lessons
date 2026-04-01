@@ -17,7 +17,7 @@ if [ -z "$name" ]; then
     echo "Имя не было выбрано, название по умолчанию: $name"
 fi
 
-if [ -z "$index" ]; then
+if [[ -z "$index" && -f "$name/main.cpp" ]]; then
     max_index=$(ls | grep -oP "^${name}\K\d+" | sort -rn | head -n 1)
     index=$(( ${max_index:-0} + 1 ))
 

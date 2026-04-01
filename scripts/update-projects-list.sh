@@ -59,7 +59,7 @@ current_list=$(cat "$list_dir/projectsList.txt")
 new_list=""
 
 # Проходимся по старому списку удаляя дупликаты, а также удалённые проекты
-while IFS= read -r project; do
+while IFS= read -u 3 -r project; do
     [ -z "$project" ] && continue
 
     if echo "$new_list" | grep -qFx "$project"; then
@@ -76,7 +76,7 @@ while IFS= read -r project; do
 
     # В противном случае добавляем проект в новый список
     if [ -z "$new_list" ]; then new_list="$project"; else new_list+=$'\n'"$project"; fi
-done <<< "$current_list"
+done 3<<< "$current_list"
 
 # Проходимся по директориям в поисках новых проектов
 for dir_path in "$list_dir"/*; do

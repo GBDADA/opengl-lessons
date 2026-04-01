@@ -8,6 +8,7 @@ selected_list=""
 debug="FALSE"
 build="FALSE"
 clean="FALSE"
+launch="FALSE" # Запускает самый новый файл в build/bin
 
 while [ -n "$1" ]; do
     # Меняем обрабатываемый ключ
@@ -16,6 +17,7 @@ while [ -n "$1" ]; do
         -d|--debug) debug="TRUE"; current_key="NONE" ;;
         -b|--build) build="TRUE"; current_key="NONE" ;;
         -c|--clean) clean="TRUE"; current_key="NONE" ;;
+        -l|--launch) launch="TRUE"; current_key="NONE" ;;
         # Передаём аргумент в один из ключей
         *)
             case "$current_key" in
@@ -57,4 +59,9 @@ cmake -S "$ROOT_DIR" -B "$BUILD_DIR" -DSELECTED_LESSONS="$selected_list"
 
 if [ "$build" = "TRUE" ]; then
     cmake --build "$BUILD_DIR"
+fi
+
+if [ "$launch" = "TRUE" ]; then
+    launch_name=$( ls -t "$BUILD_DIR/bin" | head -1 )
+    "$BUILD_DIR/bin/$launch_name"
 fi
