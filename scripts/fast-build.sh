@@ -1,6 +1,10 @@
 #!/bin/bash
 
 #Скрипт для быстрой сборки
+if [ -z "$ROOT_DIR" ]; then
+    echo "Ошибка: Переменная ROOT_DIR не установлена!" >&2
+    exit 1
+fi
 BUILD_DIR="$ROOT_DIR/build"
 
 current_key="NONE"
@@ -9,6 +13,7 @@ debug="FALSE"
 build="FALSE"
 clean="FALSE"
 launch="FALSE" # Запускает самый новый файл в build/bin
+quiet="FALSE"
 
 while [ -n "$1" ]; do
     # Меняем обрабатываемый ключ
@@ -18,6 +23,8 @@ while [ -n "$1" ]; do
         -b|--build) build="TRUE"; current_key="NONE" ;;
         -c|--clean) clean="TRUE"; current_key="NONE" ;;
         -l|--launch) launch="TRUE"; current_key="NONE" ;;
+        -q|--quiet) quiet="TRUE"; current_key="NONE" ;;
+        --) shift; break ;;
         # Передаём аргумент в один из ключей
         *)
             case "$current_key" in
@@ -37,6 +44,13 @@ while [ -n "$1" ]; do
     esac
     shift
 done
+
+[ $# -gt 0 ] && launch="TRUE" # Если есть что передавать, значит нужно запустить
+
+if [ "$quiet" = "TRUE" ]; then
+    exec 3>&1
+    exec > /dev/null
+fi
 
 # Удаляем папку build если нужно
 if [ "$clean" = "TRUE" ]; then
@@ -61,7 +75,11 @@ if [ "$build" = "TRUE" ]; then
     cmake --build "$BUILD_DIR"
 fi
 
+if [ "$quiet" = "TRUE" ]; then
+    exec 1>&3 3>&-
+fi
+
 if [ "$launch" = "TRUE" ]; then
     launch_name=$( ls -t "$BUILD_DIR/bin" | head -1 )
-    "$BUILD_DIR/bin/$launch_name"
+    "$BUILD_DIR/bin/$launch_name" "$@"
 fi
