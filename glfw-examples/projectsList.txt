@@ -2,3 +2,4 @@ first-program
 window-test
 initialization-and-termination
 window-objects
+render-resolution-and-gui
