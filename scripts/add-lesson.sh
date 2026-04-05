@@ -1,12 +1,17 @@
 #!/bin/bash
 
+# Добавляет новый проект
+source "$(dirname "$0")/common_functions.sh"
+
 name=""
 index=""
+copy_of=""
 
 while [ -n "$1" ]; do
     case "$1" in
         -n|--name) name="$2"; shift;;
         -i|--index) index="$2"; shift;;
+        -c|--clone) copy_of="$2"; shift;;
         *) ;;
     esac
     shift
@@ -14,25 +19,50 @@ done
 
 if [ -z "$name" ]; then
     name="lesson"
-    echo "Имя не было выбрано, название по умолчанию: $name"
+    echo -ne "${YELLOW}Имя не было выбрано, использовать имя по умолчанию: $name? [y/n]: ${NC}"
+    if ! get_answer; then
+        echo -e "${RED}Название не было выбрано, завершение работы скрипта.${NC}"
+        exit 1
+    fi
 fi
 
 if [[ -z "$index" && -f "$name/main.cpp" ]]; then
+    echo -e "${YELLOW}Проект с названием $name существует.${NC}"
     max_index=$(ls | grep -oP "^${name}\K\d+" | sort -rn | head -n 1)
     index=$(( ${max_index:-0} + 1 ))
 
-    echo "Индекс не был выбран, автовыбор: $index"
+    echo -ne "${YELLOW}Индекс не был выбран, использовать автовыбор: $index? [y/n]: ${NC}"
+    if ! get_answer; then
+        echo -e "${RED}Индекс не был выбран, завершение работы скрипта.${NC}"
+        exit 1
+    fi
+fi
+
+if [[ (-n "$copy_of") && (! -d "$copy_of") ]]; then
+    echo -ne "${YELLOW}Проект $copy_of не существует, использовать проект по умолчанию? [y/n]: ${NC}"
+    if ! get_answer; then
+        echo -e "${RED}Копирование $copy_of невозможно, завершение работы скрипта.${NC}"
+        exit 1
+    fi
 fi
 
 path="$name$index"
 full_name="$path/main.cpp"
 
 if [ -f "$full_name" ]; then
-    echo "Файл $full_name уже существует!"
+    echo -e "${YELLOW}Файл $full_name уже существует, завершение работы скрипта!${NC}"
     return 1
 fi
-mkdir -p "$path" && touch "$full_name"
 
+mkdir -p "$path"
+
+if [ -n "$copy_of" ]; then
+    echo -e "${GREEN}Копирование проекта $copy_of в ${path}.${NC}"
+    cp -r "$copy_of/." "$path"
+else
+
+touch "$full_name"
+echo -e "${GREEN}Создание проекта по умолчанию ${full_name}.${NC}"
 
 cat <<EOF > "$full_name"
 #include <glad/gl.h>
@@ -112,3 +142,5 @@ int main() {
     return 0;
 }
 EOF
+
+fi

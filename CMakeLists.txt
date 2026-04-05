@@ -18,6 +18,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 # Подключение внешних библиотек
 add_subdirectory("${CMAKE_SOURCE_DIR}/external")
 
+# Вывести используемый тип сборки
+message(STATUS "Текущая конфигурация сборки '${CMAKE_BUILD_TYPE}'")
+
 # Подключение проектов
 set(SELECTED_LESSONS "" CACHE STRING "проекты для сборки")
 add_subdirectory("${CMAKE_SOURCE_DIR}/glfw-examples")
