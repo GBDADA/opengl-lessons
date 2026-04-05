@@ -1,10 +1,7 @@
 #!/bin/bash
 
 #Скрипт для быстрой сборки
-if [ -z "$ROOT_DIR" ]; then
-    echo "Ошибка: Переменная ROOT_DIR не установлена!" >&2
-    exit 1
-fi
+[ -z "$ROOT_DIR" ] && { echo "Ошибка: ROOT_DIR не установлена" >&2; exit 1; }
 BUILD_DIR="$ROOT_DIR/build"
 
 current_key="NONE"

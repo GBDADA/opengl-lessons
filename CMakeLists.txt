@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 4.2.3 FATAL_ERROR)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 include(add_selected)
 include(build_selected)
+include(prepare_selected)
+include(process_projects_list)
 
 # Задаём название проекта (самый бесполезный комментарий)
 set(PROJECT_NAME opengl-lessons)
@@ -23,5 +25,6 @@ message(STATUS "Текущая конфигурация сборки '${CMAKE_BU
 
 # Подключение проектов
 set(SELECTED_LESSONS "" CACHE STRING "проекты для сборки")
-add_subdirectory("${CMAKE_SOURCE_DIR}/glfw-examples")
+set(DIRECTORIES_WITH_LESSONS "glfw-examples;tutorials-masandilov" CACHE STRING "Директории, где ищутся уроки")
+prepare_selected(DIR_LESSONS ${DIRECTORIES_WITH_LESSONS})
 build_selected()

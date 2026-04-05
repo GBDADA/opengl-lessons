@@ -1,58 +1,3 @@
-#!/bin/bash
-
-# Добавляет новый проект
-source "$(dirname "$0")/common_functions.sh"
-
-name=""
-index=""
-copy_of=""
-
-while [ -n "$1" ]; do
-    case "$1" in
-        -n|--name) name="$2"; shift;;
-        -i|--index) index="$2"; shift;;
-        -c|--clone) copy_of="$2"; shift;;
-        *) ;;
-    esac
-    shift
-done
-
-if [ -z "$name" ]; then
-    name="lesson"
-    confirm_or_exit "Имя не было выбрано, использовать имя по умолчанию: $name?"
-fi
-
-if [[ -z "$index" && -f "$name/main.cpp" ]]; then
-    echo -e "${YELLOW}Проект с названием $name существует.${NC}"
-    max_index=$(ls | grep -oP "^${name}\K\d+" | sort -rn | head -n 1)
-    index=$(( ${max_index:-0} + 1 ))
-
-    confirm_or_exit "Индекс не был выбран, использовать автовыбор: $index?"
-fi
-
-if [[ (-n "$copy_of") && (! -d "$copy_of") ]]; then
-    confirm_or_exit "Проект $copy_of не существует, использовать проект по умолчанию?"
-fi
-
-path="$name$index"
-full_name="$path/main.cpp"
-
-if [ -f "$full_name" ]; then
-    echo -e "${YELLOW}Файл $full_name уже существует, завершение работы скрипта!${NC}" >&2
-    exit 1
-fi
-
-mkdir -p "$path"
-
-if [ -n "$copy_of" ]; then
-    echo -e "${GREEN}Копирование проекта $copy_of в ${path}.${NC}"
-    cp -r "$copy_of/." "$path"
-else
-
-touch "$full_name"
-echo -e "${GREEN}Создание проекта по умолчанию ${full_name}.${NC}"
-
-cat <<EOF > "$full_name"
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -129,6 +74,3 @@ int main() {
 
     return 0;
 }
-EOF
-
-fi

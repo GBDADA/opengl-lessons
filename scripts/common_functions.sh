@@ -24,3 +24,13 @@ function get_answer {
         esac
     done
 }
+
+# Функция запроса с значением по умолчанию
+confirm_or_exit() {
+    local prompt="$1"
+    echo -ne "${YELLOW}$prompt [y/n]: ${NC}"
+    if ! get_answer; then
+        echo -e "${RED}Операция отменена${NC}" >&2
+        exit 1
+    fi
+}
