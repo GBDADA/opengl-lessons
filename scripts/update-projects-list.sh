@@ -26,7 +26,7 @@ if [ ! -f "$list_file" ]; then
     if get_answer; then
         touch "$list_file"
     else
-        echo -e "${RED}Файл projectsList.txt не был добавлен, завершение работы скрипта.${NC}"
+        echo -e "${RED}Файл projectsList.txt не был добавлен, завершение работы скрипта.${NC}" >&2
         exit 1
     fi
 

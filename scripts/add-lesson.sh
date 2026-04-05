@@ -21,7 +21,7 @@ if [ -z "$name" ]; then
     name="lesson"
     echo -ne "${YELLOW}Имя не было выбрано, использовать имя по умолчанию: $name? [y/n]: ${NC}"
     if ! get_answer; then
-        echo -e "${RED}Название не было выбрано, завершение работы скрипта.${NC}"
+        echo -e "${RED}Название не было выбрано, завершение работы скрипта.${NC}" >&2
         exit 1
     fi
 fi
@@ -33,7 +33,7 @@ if [[ -z "$index" && -f "$name/main.cpp" ]]; then
 
     echo -ne "${YELLOW}Индекс не был выбран, использовать автовыбор: $index? [y/n]: ${NC}"
     if ! get_answer; then
-        echo -e "${RED}Индекс не был выбран, завершение работы скрипта.${NC}"
+        echo -e "${RED}Индекс не был выбран, завершение работы скрипта.${NC}" >&2
         exit 1
     fi
 fi
@@ -41,7 +41,7 @@ fi
 if [[ (-n "$copy_of") && (! -d "$copy_of") ]]; then
     echo -ne "${YELLOW}Проект $copy_of не существует, использовать проект по умолчанию? [y/n]: ${NC}"
     if ! get_answer; then
-        echo -e "${RED}Копирование $copy_of невозможно, завершение работы скрипта.${NC}"
+        echo -e "${RED}Копирование $copy_of невозможно, завершение работы скрипта.${NC}" >&2
         exit 1
     fi
 fi
@@ -50,8 +50,8 @@ path="$name$index"
 full_name="$path/main.cpp"
 
 if [ -f "$full_name" ]; then
-    echo -e "${YELLOW}Файл $full_name уже существует, завершение работы скрипта!${NC}"
-    return 1
+    echo -e "${YELLOW}Файл $full_name уже существует, завершение работы скрипта!${NC}" >&2
+    exit 1
 fi
 
 mkdir -p "$path"
