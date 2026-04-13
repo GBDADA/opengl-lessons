@@ -25,6 +25,6 @@ message(STATUS "Текущая конфигурация сборки '${CMAKE_BU
 
 # Подключение проектов
 set(SELECTED_LESSONS "" CACHE STRING "проекты для сборки")
-set(DIRECTORIES_WITH_LESSONS "glfw-examples;tutorials-masandilov" CACHE STRING "Директории, где ищутся уроки")
+set(DIRECTORIES_WITH_LESSONS "glfw-examples;tutorials-masandilov;opengl-examples" CACHE STRING "Директории, где ищутся уроки")
 prepare_selected(DIR_LESSONS ${DIRECTORIES_WITH_LESSONS})
 build_selected()
