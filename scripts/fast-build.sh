@@ -94,6 +94,6 @@ if [ "$quiet" = "TRUE" ]; then
 fi
 
 if [ "$launch" = "TRUE" ]; then
-    launch_name=$( ls -t "$BUILD_DIR/bin" | head -1 )
+    launch_name=$( ls -tl "$BUILD_DIR/bin" | grep -v "^d" | awk 'NR==2 {print $9}' )
     "$BUILD_DIR/bin/$launch_name" "$@"
 fi

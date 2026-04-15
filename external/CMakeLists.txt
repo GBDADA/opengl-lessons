@@ -10,6 +10,9 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/glfw")
 # Glad
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/glad")
 
+# stb_image
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/stb_image")
+
 # Создаем интерфейсную цель "opengl_deps", которая объединяет всё
 add_library(external INTERFACE)
-target_link_libraries(external INTERFACE glfw glad)
+target_link_libraries(external INTERFACE glfw glad stb_image)
