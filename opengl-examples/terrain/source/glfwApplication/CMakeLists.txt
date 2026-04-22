@@ -1,0 +1,19 @@
+project(glfwApplication)
+set(TARGET_NAME "${PROJECT_NAME}")
+
+file(GLOB_RECURSE APPLICATION_HEADERS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/public/*")
+file(GLOB_RECURSE APPLICATION_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/private/*")
+
+add_library(${TARGET_NAME} STATIC
+    ${APPLICATION_HEADERS}
+    ${APPLICATION_SOURCES}
+)
+
+target_include_directories(${TARGET_NAME}
+    PUBLIC  "${CMAKE_CURRENT_SOURCE_DIR}/public"
+    PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/private"
+)
+
+target_link_libraries(${TARGET_NAME}
+    PUBLIC external
+)
