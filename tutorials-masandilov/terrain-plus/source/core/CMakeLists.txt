@@ -1,0 +1,19 @@
+project(core)
+set(TARGET_NAME ${PROJECT_NAME})
+
+file(GLOB_RECURSE CORE_HEADERS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/public/*.h")
+file(GLOB_RECURSE CORE_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/private/*.cpp")
+
+add_library(${TARGET_NAME} STATIC
+    ${CORE_HEADERS}
+    ${CORE_SOURCES}
+)
+
+target_include_directories(${TARGET_NAME}
+    PUBLIC  "${CMAKE_CURRENT_SOURCE_DIR}/public"
+    PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/private"
+)
+
+target_link_libraries(${TARGET_NAME}
+    PUBLIC external
+)
