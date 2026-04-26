@@ -44,7 +44,7 @@ int initializeOpenGL(int width, int height) {
     }
 
     glClearColor(0.0, 0.0, 0.0, 1.0);
-    //glEnable(GL_TEXTURE_2D);
+    glEnable(GL_TEXTURE_2D);
     glEnable(GL_DEPTH_TEST);
 
     sizeOpenGLScreen(width, height);

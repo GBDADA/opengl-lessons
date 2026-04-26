@@ -11,8 +11,8 @@ public:
     TextureManager();
     ~TextureManager();
 
-    void LoadTexture(const char *, TextureImage *);
-    void freeTexture(TextureImage *);
+    void LoadTexture(const char *fileName, TextureImage *texture);
+    void freeTexture(TextureImage *texture);
 };
 
 #endif
